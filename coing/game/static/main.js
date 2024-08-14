@@ -5,10 +5,6 @@ var modal = document.getElementById("modal");
 
 // LOGIN :
 
-window.onclick = function() {
-    modal.style.display = "none";
-}
-
 // GAME :
 
 function getRandomIn(a, b) {
