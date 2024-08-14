@@ -26,6 +26,8 @@ body {
 }
 
 .modal-content{
+    display: grid;
+    row-gap: 5%;
     max-width: 70em;
     padding: 2em;
     box-sizing: border-box;

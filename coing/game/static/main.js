@@ -1,6 +1,16 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+var modal = document.getElementById("modal");
+
+// LOGIN :
+
+window.onclick = function() {
+    modal.style.display = "none";
+}
+
+// GAME :
+
 function getRandomIn(a, b) {
     // Crée un tableau avec les quatre nombres
     const numbers = [a, b];
