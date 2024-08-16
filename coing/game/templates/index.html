@@ -11,16 +11,19 @@
 
 <!-- LOGIN -->
 
-    <div id="modal">
-        <div class="modal-content">
-            <h2>Connection</h2>
-            <form id="login">
-                <input type="text" id="username" name="username" placeholder="Username" required>
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <a href="/" class="modal-button">Submit</a>
-            </form>
-        </div>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Connexion</h2>
+        <form id="loginForm">
+            <label for="username">Nom d'utilisateur:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Se connecter</button>
+        </form>
     </div>
+</div>
 
 <!-- GAME -->
     <canvas id="gameCanvas" width="800" height="600"></canvas>

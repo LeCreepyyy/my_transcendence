@@ -2,8 +2,17 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 var modal = document.getElementById("modal");
+var closeBtn = document.getElementById("close");
 
 // LOGIN :
+
+window.onload = function() {
+    modal.style.display = "block";
+}
+
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
 
 // GAME :
 
