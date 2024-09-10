@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .forms import ProfileUpdateForm
 
 def index(request):
     if request.method == 'POST':
@@ -28,3 +30,15 @@ def index(request):
 def user_logout(request):
     logout(request)
     return redirect('index')
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user.profile)
+
+    return render(request, 'profile.html', {'form': form})
