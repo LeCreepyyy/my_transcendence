@@ -7,7 +7,10 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
+
 <body>
+
+    <!-- Simple Page (game & profile) -->
     {% if user.is_authenticated %}
     <script src="{% static 'main.js' %}" defer></script>
         <div class="main">
@@ -18,22 +21,15 @@
             </form>
             <button id="profil">profil</button>
         </div>
-        <div class="test">
-            <h1>test</h1>
+        <div class="profil-page">
+            <h1>Profil :</h1>
             <img src="pictures.png" id="pp-id" style="max-width: 150px; max-height: 150px;">
             <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file">
-            <script>
-
-                let pp = document.getElementById("pp-id");
-                let inputFile = document.getElementById("input-file");
-
-                inputFile.onchange = function(){
-                    pp.src = URL.createObjectURL(inputFile.files[0]);
-                }
-
-            </script>
+            <script src="{% static 'profil.js' %}"></script>
             <button id="back">back</button>
         </div>
+
+    <!-- Login Form -->
     {% else %}
         <h2>Inscription</h2>
         <form method="post">
@@ -60,4 +56,5 @@
         {% endif %}
     {% endif %}
 </body>
+
 </html>

@@ -1,7 +1,8 @@
 from django import forms
-from .models import Profile
+from .models import p_img
 
-class ProfileUpdateForm(forms.ModelForm):
+class img_form(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ['profile_picture']
+        model = p_img
+        fields = ['image', 'desc']
+

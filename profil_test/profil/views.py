@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileUpdateForm
+from .forms import img_form
 
 def index(request):
     if request.method == 'POST':
@@ -31,14 +31,13 @@ def user_logout(request):
     logout(request)
     return redirect('index')
 
-@login_required
-def profile(request):
+def upload_image(request):
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        form = img_form(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('profile')
-    else:
-        form = ProfileUpdateForm(instance=request.user.profile)
+            return redirect('success_page')
+        else:
+            form = img_form()
 
-    return render(request, 'profile.html', {'form': form})
+        return render(request, 'upload_image.html', {'form': form})
