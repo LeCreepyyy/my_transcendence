@@ -1,1 +1,5 @@
-coing/db.sqlite3
+profil_test/db.sqlite3
+project/env/
+project/project/db.sqlite3
+project/project/init_local_dev.py
+
