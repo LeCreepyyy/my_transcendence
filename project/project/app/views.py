@@ -1,7 +1,13 @@
-from django.shortcuts import render, request
+import requests
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
+
+from django_otp.plugins.otp_totp.models import TOTDevice
+import qrcode
+from io import BytesIO
+from django.http import HttpResponse
 
 def register(request):
     if request.method == 'POST':
@@ -17,10 +23,26 @@ def register(request):
         user.set_password(password)
         user.save()
 
-        return redirect('login')
+        totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
 
+        login(request, user)
+
+        return redirect('user_login') # changer par 'setup_2fa'
 
     return render(request, 'profil.html')
+
+def setup_2fa(request):
+    user = request.user
+    device = TOTPDevice.objects.get(user=user)
+
+    totp_url = device.config_url
+
+    qr = qrcode.make(totp_url)
+    img = BytesIO()
+    qr.save(img, "PNG")
+    img.seek(0)
+
+    return HttpResponse(img.getvalue(), content_type="image/png")
 
 def user_login(request):
     if request.method == 'POST':

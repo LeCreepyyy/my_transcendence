@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'rest_framework_simplejwt',
+
+    'two_factor',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_otp.middleware.OTPMiddleware'
 ]
 
 ROOT_URLCONF = 'project.urls'
