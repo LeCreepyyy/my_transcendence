@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +8,16 @@
 </head>
 <body>
 
+    <h1>Fruit-Pong</h1>
+
     <div class="wrapper">
-        <form action="">
+        <form id="login-form">
             <h1>Login</h1>
             <div class="input-box">
-                <input type="username" placeholder="Username">
+                <input type="username" placeholder="Username" required>
             </div>
             <div class="input-box">
-                <input type="password" placeholder="Password">
+                <input type="password" placeholder="Password" required>
             </div>
 
             <button type="submit" class="btn">Login</button>
@@ -24,6 +27,16 @@
             </div>
         </form>
     </div>
+
+    <div class="2fa-section" style="display: none;">
+        <form id="2fa-form">
+            <label for="a2f-code">Code 2FA:</label>
+            <input type="text" id="a2f-code" name="a2f-code" required>
+            <button type="submit">Confirm</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/login-form.js' %}"></script>
 
 </body>
 </html>
