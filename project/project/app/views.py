@@ -32,7 +32,7 @@ def register(request):
 
         login(request, user)
 
-        return redirect('user_login') # changer par 'setup_2fa'
+        return redirect('setup_2fa')
 
     return render(request, 'profil.html')
 
