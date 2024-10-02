@@ -22,7 +22,7 @@ def register(request):
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'User already exists')
-            return render(request, 'profil.html')
+            return render(request, 'register.html')
         
         user = User.objects.create_user(username=username, email=email)
         user.set_password(password)
@@ -34,7 +34,7 @@ def register(request):
 
         return redirect('setup_2fa')
 
-    return render(request, 'profil.html')
+    return render(request, 'home.html')
 
 def setup_2fa(request):
     user = request.user
@@ -60,7 +60,7 @@ def user_login(request):
             return redirect('verify-otp')
         else:
             messages.error(request, 'Username or Password is wront')
-    return render(request, 'profil.html')
+    return render(request, 'login.html')
 
 def verify_otp(request):
     if request.method == 'POST':
@@ -96,8 +96,8 @@ def verify_otp(request):
         else:
             messages.error(request, 'OTP invalid.')
     
-    return render(request, 'profil.html')
+    return render(request, 'login.html')
 
 @permission_classes([IsAuthenticated])
 def home(request):
-    return render(request, 'profil.html')
+    return render(request, 'home.html')

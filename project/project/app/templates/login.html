@@ -1,17 +1,18 @@
-{% load static %}
+<!-- {% load static %} -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruit-Pong</title>
+    <title>Login</title>
 </head>
 <body>
 
     <h1>Fruit-Pong</h1>
 
     <div class="wrapper">
-        <form id="login-form">
+        <form id="login-form" method="POST" action="{% url 'user_login' %}">
+            {% csrf token %}
             <h1>Login</h1>
             <div class="input-box">
                 <input type="username" placeholder="Username" required>
@@ -28,15 +29,18 @@
         </form>
     </div>
 
-    <div class="2fa-section" style="display: none;">
-        <form id="2fa-form">
+    <!-- mettre le code en dessous dans une autre page juste apres le login au dessus -->
+
+    <div class="2fa-section">
+        <form id="2fa-form" method="POST" action="{% url 'verify_otp' %}">
+            {% csrf_token %}
             <label for="a2f-code">Code 2FA:</label>
-            <input type="text" id="a2f-code" name="a2f-code" required>
+            <input type="text" id="a2f-code" name="otp_token" required>
             <button type="submit">Confirm</button>
         </form>
     </div>
 
-    <script src="{% static 'js/login-form.js' %}"></script>
+    <!-- <script src="{% static 'js/spa.js' %}"></script> -->
 
 </body>
 </html>
