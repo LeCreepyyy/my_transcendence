@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
+from django.urls import reverse
 
 from django_otp.plugins.otp_totp.models import TOTDevice
 import qrcode
@@ -32,9 +33,12 @@ def register(request):
 
         login(request, user)
 
-        return redirect('setup_2fa')
+        #return redirect('setup_2fa')
+        qr_code = reverse('setup_2fa')
 
-    return render(request, 'home.html')
+
+    return render(request, 'register.html', {'qr_code': qr_code})
+
 
 def setup_2fa(request):
     user = request.user
@@ -96,7 +100,7 @@ def verify_otp(request):
         else:
             messages.error(request, 'OTP invalid.')
     
-    return render(request, 'login.html')
+    return render(request, 'verify_otp.html')
 
 @permission_classes([IsAuthenticated])
 def home(request):

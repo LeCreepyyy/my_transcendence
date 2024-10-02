@@ -16,7 +16,7 @@ urlpatterns = [
     path('', include('two_factor.urls', 'two_factor')),
 
     path('login/', user_login, name='user_login'),
-    path('verify_otp', verify_otp, name='verify_otp'),
+    path('verify_otp/', verify_otp, name='verify_otp'),
 
     path('register/', register, name='register'),
     path('home/', home, name='home'),
