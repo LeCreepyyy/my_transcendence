@@ -45,3 +45,7 @@ class RegisterForm(forms.Form):
             raise ValidationError('Email not valid')
         
         return email
+
+
+class CheckBox2FAForm(forms.Form):
+    checkbox = forms.BooleanField(required=False, label="Activate 2FA")

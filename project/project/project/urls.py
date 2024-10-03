@@ -19,5 +19,6 @@ urlpatterns = [
     path('verify_otp/', verify_otp, name='verify_otp'),
 
     path('register/', register, name='register'),
+
     path('home/', home, name='home'),
 ]

@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import login
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, CheckBox2FAForm
 
 from django_otp.plugins.otp_totp.models import TOTPDevice
 import qrcode
@@ -121,7 +121,21 @@ def verify_otp(request):
 
 @permission_classes([IsAuthenticated])
 def home(request):
-    # totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
-    # qr_code = reverse('setup_2fa')
-    # return render(request, 'home.html', {'qr_code': qr_code})
-    return render(request, 'home.html')
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    form = CheckBox2FAForm()
+    username = request.user.username
+    if request.method == 'POST':
+        if form.is_valid():
+            form = CheckBox2FAForm(request.POST)
+            checkbox_value = form.cleaned_data['checkbox']
+
+            if checkbox_value:
+                totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
+                qr_code = reverse('setup_2fa')
+                return render(request, 'home.html', {'qr_code': qr_code})
+                #return redirect('setup_2fa')
+    else:
+        form = CheckBox2FAForm()
+
+    return render(request, 'home.html', {'form':form}, {'username':username})
