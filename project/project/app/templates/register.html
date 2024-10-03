@@ -12,19 +12,24 @@
             {% csrf token %}
             <h1>Login</h1>
 
+            {{ form.username.errors }}
             <div class="input-box">
-                <input type="username" name="username" placeholder="Username" required>
+                {{ form.username }}
             </div>
+
+            {{ form.password.errors }}
             <div class="input-box">
-                <input type="password" name="password" placeholder="Password" required>
+                {{ form.password }}
             </div>
+
+            {{ form.email.errors }}
             <div class="input-box">
-                <input type="email" name="email" placeholder="Email" required>
+                {{ form.email }}
             </div>
 
             <button type="submit" class="btn">Register</button>
 
-            <img src="{{ qr_code }}" alt="QR for 2FA">
+            <!-- <img src="{{ qr_code }}" alt="QR for 2FA"> -->
 
         </form>
     </div>

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 from django.urls import reverse
+from .forms import LoginForm, RegisterForm
 
 from django_otp.plugins.otp_totp.models import TOTDevice
 import qrcode
@@ -15,29 +16,37 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+    # verif register car pas finis et pas sur que sa marche theoriquement
+
 def register(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'User already exists')
             return render(request, 'register.html')
-        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already used')
+            return render(request, 'register.html')
+
         user = User.objects.create_user(username=username, email=email)
         user.set_password(password)
         user.save()
 
-        totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
+        # totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
 
         login(request, user)
 
-        #return redirect('setup_2fa')
-        qr_code = reverse('setup_2fa')
+        return redirect('user_login')
+        # qr_code = reverse('setup_2fa')
 
 
-    return render(request, 'register.html', {'qr_code': qr_code})
+    # return render(request, 'register.html', {'qr_code': qr_code})
+    return render(request, 'register.html')
 
 
 def setup_2fa(request):
@@ -55,8 +64,10 @@ def setup_2fa(request):
 
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
