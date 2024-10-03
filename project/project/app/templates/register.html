@@ -9,8 +9,8 @@
     
     <div class="wrapper"></div>
         <form id="register-form" method="POST" action="{% url 'register' %}">
-            {% csrf token %}
-            <h1>Login</h1>
+            {% csrf_token %}
+            <h1>Register</h1>
 
             {{ form.username.errors }}
             <div class="input-box">
@@ -30,6 +30,10 @@
             <button type="submit" class="btn">Register</button>
 
             <!-- <img src="{{ qr_code }}" alt="QR for 2FA"> -->
+
+            <div class="login">
+                <a href="{% url 'user_login' %}">Already have an account ?</a>
+            </div>
 
         </form>
     </div>

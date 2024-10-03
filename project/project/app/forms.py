@@ -9,29 +9,29 @@ class LoginForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'input-box'})
     )
     password = forms.CharField(
-        min_length=8
-        max_length=100
+        min_length=8,
+        max_length=100,
         required=True,
         widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'input-box'})
     )
 
 
 
-class RegisterForm(forms.Form)
+class RegisterForm(forms.Form):
     username = forms.CharField(
         max_length=100,
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'input-box'})
     )
     password = forms.CharField(
-        min_length=8
-        max_length=100
+        min_length=8,
+        max_length=100,
         required=True,
         widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'input-box'})
     )
     email = forms.EmailField(
         required=True,
-        widget=forms.PasswordInput(attrs={'placeholder': 'e-mail@gmail.com', 'class': 'input-box'})
+        widget=forms.EmailInput(attrs={'placeholder': 'e-mail@gmail.com', 'class': 'input-box'})
     )
     
     def clean_email(self):

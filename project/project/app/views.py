@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth import login
 from .forms import LoginForm, RegisterForm
 
-from django_otp.plugins.otp_totp.models import TOTDevice
+from django_otp.plugins.otp_totp.models import TOTPDevice
 import qrcode
 from io import BytesIO
 from django.http import HttpResponse
@@ -44,9 +45,11 @@ def register(request):
         return redirect('user_login')
         # qr_code = reverse('setup_2fa')
 
+    else:
+        form = RegisterForm()
 
     # return render(request, 'register.html', {'qr_code': qr_code})
-    return render(request, 'register.html')
+    return render(request, 'register.html', {'form': form})
 
 
 def setup_2fa(request):
@@ -63,6 +66,7 @@ def setup_2fa(request):
     return HttpResponse(img.getvalue(), content_type="image/png")
 
 def user_login(request):
+    form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -71,11 +75,13 @@ def user_login(request):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            request.session['pre_otp_user_id'] = user.id
-            return redirect('verify-otp')
+            # request.session['pre_otp_user_id'] = user.id
+            # return redirect('verify-otp')
+            login(request, user)
+            return redirect('home')
         else:
             messages.error(request, 'Username or Password is wront')
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'form':form})
 
 def verify_otp(request):
     if request.method == 'POST':
@@ -115,4 +121,7 @@ def verify_otp(request):
 
 @permission_classes([IsAuthenticated])
 def home(request):
+    # totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
+    # qr_code = reverse('setup_2fa')
+    # return render(request, 'home.html', {'qr_code': qr_code})
     return render(request, 'home.html')
