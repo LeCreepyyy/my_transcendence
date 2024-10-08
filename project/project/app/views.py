@@ -139,3 +139,7 @@ def home(request):
         form = CheckBox2FAForm()
 
     return render(request, 'home.html', {'form':form}, {'username':username})
+
+
+def default(request):
+    return redirect('user_login')
