@@ -4,7 +4,7 @@ from django.urls import path, include
 #from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from app.views import user_login, register, home, verify_otp, default
+from app.views import user_login, register, home, verify_otp, default, setup_2fa
 
 urlpatterns = [
     path('admin/', admin.site.urls),

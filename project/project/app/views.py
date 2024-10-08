@@ -9,6 +9,7 @@ from .forms import LoginForm, RegisterForm, CheckBox2FAForm
 
 from django_otp.plugins.otp_totp.models import TOTPDevice
 import qrcode
+import base64
 from io import BytesIO
 from django.http import HttpResponse
 
@@ -124,21 +125,27 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
     form = CheckBox2FAForm()
-    username = request.user.username
+
     if request.method == 'POST':
+        form = CheckBox2FAForm(request.POST)
         if form.is_valid():
-            form = CheckBox2FAForm(request.POST)
             checkbox_value = form.cleaned_data['checkbox']
 
             if checkbox_value:
-                totp_device = TOTPDevice.objects.create(user=user, name="Default TOTP Device")
-                qr_code = reverse('setup_2fa')
-                return render(request, 'home.html', {'qr_code': qr_code})
-                #return redirect('setup_2fa')
-    else:
-        form = CheckBox2FAForm()
+                totp_device = TOTPDevice.objects.create(user=request.user, name="Default TOTP Device")
+                device = TOTPDevice.objects.filter(user=request.user).first()
+            
+                totp_url = device.config_url
+            
+                qr = qrcode.make(totp_url)
+                img = BytesIO()
+                qr.save(img, "PNG")
+                img.seek(0)
 
-    return render(request, 'home.html', {'form':form}, {'username':username})
+                qr_code_base64 = base64.b64encode(img.getvalue()).decode('utf-8')
+
+    username = request.user.username
+    return render(request, 'home.html', {'form': form, 'username': username})
 
 
 def default(request):

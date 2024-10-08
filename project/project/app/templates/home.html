@@ -12,5 +12,9 @@
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>
+    {% if show_qr_code %}
+    <h2>Scan this QR code to enable 2FA:</h2>
+    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code for 2FA">
+    {% endif %}
 </body>
 </html>
