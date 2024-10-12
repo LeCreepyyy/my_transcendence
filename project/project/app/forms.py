@@ -2,18 +2,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 import re
 
-class LoginForm(forms.Form):
-    username = forms.CharField(
-        max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'input-box'})
-    )
-    password = forms.CharField(
-        min_length=8,
-        max_length=100,
-        required=True,
-        widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'input-box'})
-    )
 
 
 
@@ -45,7 +33,3 @@ class RegisterForm(forms.Form):
             raise ValidationError('Email not valid')
         
         return email
-
-
-class CheckBox2FAForm(forms.Form):
-    checkbox = forms.BooleanField(required=False, label="Activate 2FA")

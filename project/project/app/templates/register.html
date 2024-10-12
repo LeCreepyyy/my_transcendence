@@ -10,6 +10,17 @@
     <div class="wrapper"></div>
         <form id="register-form" method="POST" action="{% url 'register' %}">
             {% csrf_token %}
+
+            {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+
             <h1>Register</h1>
 
             {{ form.username.errors }}
@@ -32,7 +43,7 @@
             <!-- <img src="{{ qr_code }}" alt="QR for 2FA"> -->
 
             <div class="login">
-                <a href="{% url 'user_login' %}">Already have an account ?</a>
+                <a href="{% url 'login' %}">Already have an account ?</a>
             </div>
 
         </form>

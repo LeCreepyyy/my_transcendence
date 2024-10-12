@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'two_factor',
     'django.contrib.sites',
     'django_otp',
+    'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
 
 ]
@@ -112,6 +113,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'two_factor:login'
+
+LOGIN_REDIRECT_URL = 'two_factor:profile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
