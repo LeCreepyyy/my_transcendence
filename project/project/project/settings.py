@@ -119,7 +119,11 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_URL = 'two_factor:login'
 
-LOGIN_REDIRECT_URL = 'two_factor:profile'
+# LOGIN_REDIRECT_URL = 'two_factor:profile'
+
+LOGIN_REDIRECT_URL = 'home'
+
+TWO_FACTOR_LOGIN_REDIRECT_URL = 'home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

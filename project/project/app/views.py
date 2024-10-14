@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import login
 from .forms import RegisterForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 from django_otp.plugins.otp_totp.models import TOTPDevice
 import qrcode
@@ -49,8 +51,8 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-@permission_classes([IsAuthenticated])
 def home(request):
+    username = request.user
     if not request.user.is_authenticated:
-        return redirect('register')
-    return render(request, 'home.html', {'username': username})
+        return redirect('login')
+    return render(request, 'home.html')
