@@ -4,6 +4,10 @@
 
 {% block content %}
   <h1>Profile</h1>
+
+  <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture" />
+
+
   <h1>{% block title %}{% trans "Account Security" %}{% endblock %}</h1>
 
   {% if default_device %}
