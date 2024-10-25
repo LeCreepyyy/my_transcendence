@@ -20,10 +20,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
-from django_otp import user_has_device
-
 
 def register(request):
     if request.method == 'POST':
@@ -53,40 +50,18 @@ def register(request):
 
     return render(request, 'register.html', {'form': form})
 
-class TwoFactorLoginWithJWT(LoginView):
-    template_name = 'account/login.html'  # Chemin vers ton template de login
 
-    def form_valid(self, form):
-        """
-        Si le formulaire est valide, vérifier si l'authentification à deux facteurs est requise
-        et, en cas de succès, générer un JWT et renvoyer une réponse JSON ou rediriger vers le dashboard.
-        """
-        user = form.get_user()
-        # Authentifie l'utilisateur et crée la session
-        login(self.request, user)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def jwt_exchange(request):
+    user = request.user
+    refresh = RefreshToken.for_user(user)
+    
+    return JsonResponse({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    })
 
-        if user_has_device(user):
-            # Si l'authentification à deux facteurs est réussie, génère le JWT
-            return self.generate_jwt(user)
-        else:
-            return JsonResponse({'error': 'L’authentification à deux facteurs est requise.'}, status=403)
-
-    def generate_jwt(self, user):
-        """
-        Crée et renvoie les tokens d'accès et de rafraîchissement JWT pour l'utilisateur authentifié
-        """
-        refresh = RefreshToken.for_user(user)
-        
-        # Vérifie si la requête est AJAX (pour envoyer une réponse JSON)
-        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            # Renvoie les tokens JWT en JSON
-            return JsonResponse({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            })
-        else:
-            # Si ce n'est pas une requête AJAX, renvoie une réponse HTML classique
-            return super().form_valid(form)
 
 def home(request):
     username = request.user

@@ -6,10 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from two_factor.urls import urlpatterns as tf_urls
 from django.contrib.auth import views as auth_views
 
-from app.views import register, home, TwoFactorLoginWithJWT
-
-from django.conf import settings
-from django.conf.urls.static import static
+from app.views import register, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -20,13 +17,9 @@ urlpatterns = [
 
     path('', include(tf_urls)),
 
-    path('account/login/', TwoFactorLoginWithJWT.as_view(), name='login'),
-    # path('account/login/', auth_views.LoginView.as_view(), name='login'),
+    path('account/login/', auth_views.LoginView.as_view(), name='login'),
 
     path('register/', register, name='register'),
 
     path('home/', home, name='home'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

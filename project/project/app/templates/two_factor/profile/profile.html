@@ -4,17 +4,7 @@
 {% load static %}
 
 {% block content %}
-  <h1>Profile</h1>
-
-  {% if user.profile_picture %}
-  
-  <img src="{{ user.profile_picture.url }}" alt="profile_picture">
-
-  {% else %}
-
-  <img src="{% static 'profile_pic/default/default.jpg' %}" alt="profile picture" />
-
-  {% endif %}
+  <p>profile settings</p>
 
   <h1>{% block title %}{% trans "Account Security" %}{% endblock %}</h1>
 
