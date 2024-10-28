@@ -62,6 +62,12 @@ def jwt_exchange(request):
         'access': str(refresh.access_token),
     })
 
+    print('sa marche !')
+
+    return redirect('/home/')
+    # response['Location'] = '/home/'
+    # return response
+
 
 def home(request):
     username = request.user

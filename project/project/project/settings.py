@@ -121,7 +121,7 @@ LOGIN_URL = 'two_factor:login'
 
 # LOGIN_REDIRECT_URL = 'two_factor:profile'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/jwt_exchange/'
 
 TWO_FACTOR_LOGIN_REDIRECT_URL = 'home'
 
