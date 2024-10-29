@@ -20,7 +20,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from django.http import JsonResponse
+#from django.http import JsonResponse
 
 def register(request):
     if request.method == 'POST':
@@ -51,22 +51,44 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def jwt_exchange(request):
-    user = request.user
-    refresh = RefreshToken.for_user(user)
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def jwt_exchange(request):
+#     user = request.user
+#     refresh = RefreshToken.for_user(user)
     
-    return JsonResponse({
-        'refresh': str(refresh),
-        'access': str(refresh.access_token),
-    })
+#     return JsonResponse({
+#         'refresh': str(refresh),
+#         'access': str(refresh.access_token),
+#     })
 
-    print('sa marche !')
+#     print('sa marche !')
 
-    return redirect('/home/')
-    # response['Location'] = '/home/'
-    # return response
+#     return redirect('/home/')
+#     # response['Location'] = '/home/'
+#     # return response
+
+@api_view(['POST'])
+def login_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    # Authentifier l'utilisateur avec le nom d'utilisateur et le mot de passe
+    user = authenticate(request, username=username, password=password)
+    
+    if user is not None:
+        # Vérifier si l'utilisateur a un dispositif 2FA
+        devices = TOTPDevice.objects.filter(user=user, confirmed=True)
+
+        if devices.exists():
+            # Si l'utilisateur a un dispositif 2FA, demandez le code 2FA
+            return Response({"status": "2fa_required"}, status=403)
+        else:
+            # Pas de 2FA, générer les tokens JWT
+            tokens = get_tokens_for_user(user)
+            return Response(tokens)
+    else:
+        return Response({"error": "Invalid credentials"}, status=400)
 
 
 def home(request):
