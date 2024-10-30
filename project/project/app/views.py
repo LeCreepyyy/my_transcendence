@@ -68,27 +68,46 @@ def register(request):
 #     # response['Location'] = '/home/'
 #     # return response
 
-@api_view(['POST'])
-def login_view(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
-    # Authentifier l'utilisateur avec le nom d'utilisateur et le mot de passe
-    user = authenticate(request, username=username, password=password)
-    
-    if user is not None:
-        # Vérifier si l'utilisateur a un dispositif 2FA
-        devices = TOTPDevice.objects.filter(user=user, confirmed=True)
-
-        if devices.exists():
-            # Si l'utilisateur a un dispositif 2FA, demandez le code 2FA
-            return Response({"status": "2fa_required"}, status=403)
-        else:
-            # Pas de 2FA, générer les tokens JWT
-            tokens = get_tokens_for_user(user)
-            return Response(tokens)
+@login_required
+@api_view(['GET'])
+def jwt_exchange(request):
+    if request.user.is_authenticated:
+        tokens = get_tokens_for_user(request.user)
+        response = redirect('/home/')
+        response.set_cookie('access_token', tokens['access'])
+        response.set_cookie('refresh_token', tokens['refresh'])
+        return response
     else:
-        return Response({"error": "Invalid credentials"}, status=400)
+        return Response({"error":"Authentication failed"}, status=401)
+
+# @api_view(['POST'])
+# def login_view(request):
+#     username = request.data.get('username')
+#     password = request.data.get('password')
+
+#     # Authentifier l'utilisateur avec le nom d'utilisateur et le mot de passe
+#     user = authenticate(request, username=username, password=password)
+    
+#     if user is not None:
+#         # Vérifier si l'utilisateur a un dispositif 2FA
+#         devices = TOTPDevice.objects.filter(user=user, confirmed=True)
+
+#         if devices.exists():
+#             # Si l'utilisateur a un dispositif 2FA, demandez le code 2FA
+#             return Response({"status": "2fa_required"}, status=403)
+#         else:
+#             # Pas de 2FA, générer les tokens JWT
+#             tokens = get_tokens_for_user(user)
+#             return Response(tokens)
+#     else:
+#         return Response({"error": "Invalid credentials"}, status=400)
 
 
 def home(request):

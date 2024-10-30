@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('', include(tf_urls)),
 
-    path('account/login/', auth_views.LoginView.as_view(), name='login'),
+    path('account/login/', auth_views.LoginView.as_view(success_url="/jwt_exchange/"), name='login'),
     path('jwt_exchange/', jwt_exchange, name='jwt'),
 
     path('register/', register, name='register'),
