@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from two_factor.urls import urlpatterns as tf_urls
 from django.contrib.auth import views as auth_views
 
-from app.views import register, home, jwt_exchange
+from app.views import register, home, jwt_exchange, login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('account/login/', auth_views.LoginView.as_view(success_url="/jwt_exchange/"), name='login'),
     path('jwt_exchange/', jwt_exchange, name='jwt'),
+    path('login/', login, name='login'),
 
     path('register/', register, name='register'),
 
