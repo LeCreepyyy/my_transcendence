@@ -64,27 +64,6 @@ def jwt_exchange(request):
     response.set_cookie('refresh_token', tokens['refresh'])
     return response
 
-@api_view(['GET','POST'])
-def login(request):
-    if request.method == 'POST':
-
-        username = request.data.get('username')
-        password = request.data.get('password')
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            # Vérifier si l'utilisateur a un dispositif 2FA
-            devices = TOTPDevice.objects.filter(user=user, confirmed=True)
-
-            if devices.exists():
-                return redirect(reverse('two_factor:login'))
-            else:
-                return redirect('/jwt_exchange/')
-        else:
-            return render(request, 'login.html', {'error': "Invalid Credentials."})
-    return render(request, 'login.html')
-
 def home(request):
     username = request.user
     if not request.user.is_authenticated:
