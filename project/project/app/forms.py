@@ -3,8 +3,6 @@ from django.core.exceptions import ValidationError
 import re
 
 
-
-
 class RegisterForm(forms.Form):
     username = forms.CharField(
         max_length=100,
