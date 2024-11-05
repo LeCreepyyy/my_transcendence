@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login #as auth_login
+from django.contrib.auth import authenticate, login, logout #as auth_login
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import login
@@ -64,8 +64,18 @@ def jwt_exchange(request):
     response.set_cookie('refresh_token', tokens['refresh'])
     return response
 
+def logout_view(request):
+    
+    logout(request)
+    
+    response = redirect('two_factor:login')
+    response.delete_cookie('access_token')
+    response.delete_cookie('refresh_token')
+    
+    return response
+
 def home(request):
     username = request.user
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('two_factor:login')
     return render(request, 'home.html')
