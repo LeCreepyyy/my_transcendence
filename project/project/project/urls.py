@@ -4,9 +4,8 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from two_factor.urls import urlpatterns as tf_urls
-from django.contrib.auth import views as auth_views
 
-from app.views import register, home, jwt_exchange, login, logout_view
+from app.views import register, home, jwt_exchange, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -17,7 +16,6 @@ urlpatterns = [
 
     path('', include(tf_urls)),
 
-    # path('account/login/', auth_views.LoginView.as_view(success_url="/jwt_exchange/"), name='login'),
     path('jwt_exchange/', jwt_exchange, name='jwt'),
 
     path('register/', register, name='register'),

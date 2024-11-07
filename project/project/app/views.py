@@ -1,24 +1,14 @@
 import requests
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout #as auth_login
+from django.contrib.auth import logout
 from django.contrib import messages
-from django.urls import reverse
-from django.contrib.auth import login
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-from django_otp.plugins.otp_totp.models import TOTPDevice
-import qrcode
-import base64
-from io import BytesIO
-from django.http import HttpResponse
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
+
+#from django_otp.plugins.otp_totp.models import TOTPDevice // For 2FA
 
 def register(request):
     if request.method == 'POST':
@@ -38,8 +28,6 @@ def register(request):
         user = User.objects.create_user(username=username, email=email)
         user.set_password(password)
         user.save()
-
-        # login(request, user)
 
         return redirect('two_factor:login')
 
