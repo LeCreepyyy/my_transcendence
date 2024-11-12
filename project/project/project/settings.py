@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
 
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -113,11 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 
-LOGIN_URL = 'two_factor:login'
+# LOGIN_URL = 'two_factor:login'
 
 # LOGIN_REDIRECT_URL = 'two_factor:profile'
 

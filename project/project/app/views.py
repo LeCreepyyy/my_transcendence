@@ -62,6 +62,7 @@ def logout_view(request):
     
     return response
 
+@login_required
 def home(request):
     username = request.user
     if not request.user.is_authenticated:
