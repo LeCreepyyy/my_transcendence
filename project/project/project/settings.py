@@ -118,13 +118,13 @@ AUTH_PASSWORD_VALIDATORS = [
 #     'django.contrib.auth.backends.ModelBackend',
 # ]
 
-# LOGIN_URL = 'two_factor:login'
+LOGIN_URL = 'two_factor:login'
 
 # LOGIN_REDIRECT_URL = 'two_factor:profile'
 
-LOGIN_REDIRECT_URL = '/jwt_exchange/'
+LOGIN_REDIRECT_URL = '/app/jwt_exchange/'
 
-TWO_FACTOR_LOGIN_REDIRECT_URL = '/jwt_exchange/'
+TWO_FACTOR_LOGIN_REDIRECT_URL = '/app/jwt_exchange/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

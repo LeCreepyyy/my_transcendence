@@ -1,4 +1,4 @@
-import requests
+#import requests
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
@@ -47,7 +47,7 @@ def get_tokens_for_user(user):
 @api_view(['GET'])
 def jwt_exchange(request):
     tokens = get_tokens_for_user(request.user)
-    response = redirect('/home/')
+    response = redirect('/app/home/')
     response.set_cookie('access_token', tokens['access'])
     response.set_cookie('refresh_token', tokens['refresh'])
     return response

@@ -4,6 +4,6 @@ from two_factor.urls import urlpatterns as tf_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.urls')),
+    path('app/', include('app.urls')),
     path('', include(tf_urls)),
 ]
